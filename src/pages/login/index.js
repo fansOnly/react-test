@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Button, Checkbox, Icon } from 'antd';
+import { Form, Input, Button, Checkbox, Icon, message } from 'antd';
 import PropTypes from 'prop-types';
 import './index.scss';
 
@@ -10,12 +10,27 @@ class LoginForm extends React.Component {
         remember: true,
         loggedIn: false
     }
+    componentDidMount () {
+        const { history } = this.props;
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            history.push('/');
+        }
+    }
     handleSubmit = (e) => {
         e.preventDefault();
-        const { form } = this.props;
+        const { form, history, location } = this.props;
+        console.log('location', location);
         form.validateFields((err, values) => {
             if(!err) {
                 console.log('当前表单输入', values);
+                const { username, password } = values;
+                if (username === 'test' && password === '1') {
+                    localStorage.setItem('user', JSON.stringify(values));
+                    history.push(location.state.from.pathname);
+                } else {
+                    message.error('帐号密码错误！');
+                }
             }
         })
     }
@@ -57,8 +72,9 @@ class LoginForm extends React.Component {
 }
 
 LoginForm.propTypes = {
-    form: PropTypes.object.isRequired
+    form: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired
 }
 
-// export default LoginFormPage;
 export default Form.create({name:'login_form'})(LoginForm);

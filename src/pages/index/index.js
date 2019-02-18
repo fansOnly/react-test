@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './index.scss';
 
 class Index extends React.Component {
@@ -21,6 +22,8 @@ class Index extends React.Component {
                 <div className="t1">this is home page.</div>
                 <p><a href="/login">去登陆</a></p>
                 <p><a href="/index/pageA">page A</a></p>
+                <p><Link to='/index/pageA'> page A....</Link></p>
+                <p><a href="/test">test</a></p>
                 <div className="login-title" onClick={this.test}>计数器: {count}</div>
             </div>
         )
